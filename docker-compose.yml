@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  api-service:
+    build: ./api-service
+    volumes:
+      - ./api-service:/usr/src/app
+    ports:
+      - 5001:80
