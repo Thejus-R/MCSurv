@@ -1,5 +1,3 @@
-import json
-from turtle import update
 import firebase_admin
 from firebase_admin import db
 from firebase_admin import credentials
@@ -20,33 +18,36 @@ class Challan:
         self.camID = camID
         self.dateStamp = dateStamp
 
-    # Creating a JSON string from Python Object
-    def createJSON(self):
-        return json.dumps(self.__dict__)
-
-    def getChallanNo():
-        ref = db.reference('/lastChallanNo')
-        return ref.get()
-
     def createChallan(self):
         challanNo = updateChallanNo()
-        ref = db.reference("".join(["/challanList/", str(challanNo)]))
-        ref.set(self.createJSON())
+        ref = db.reference("/challanList")
+        ref.child(str(challanNo)).set({
+            'vehicleRegNo': self.vehicleRegNo,
+            'ownerName': self.ownerName,
+            'timeStamp': self.timeStamp,
+            'camID': self.camID,
+            'dateStamp': self.dateStamp
+        })
 
 
+# Get Current Challan No. from Remote
 def getChallanNo():
     ref = db.reference('/lastChallanNo')
     return ref.get()
 
 
+# Increment Challan No. for new Challan
 def updateChallanNo():
     ref = db.reference('/lastChallanNo')
     ref.set(getChallanNo()+1)
     return getChallanNo()
 
 
+# Creating an object of Challan
 x = Challan('KL-02-BD-5008', "Thejus Rajendran",
             "12:30PM", "CHN01", "02/04/2022")
+
+# Calling createChallan() for adding data to remote
 x.createChallan()
 
 # def getChallanNo():
