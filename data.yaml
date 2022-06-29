@@ -1,0 +1,7 @@
+names:
+- motorcycle
+- no-helmet
+- number-plate
+nc: 3
+train: Survillance-3/train/images
+val: Survillance-3/valid/images
